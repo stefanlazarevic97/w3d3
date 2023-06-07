@@ -140,22 +140,51 @@ def bsearch(array, target)
     center = array.length / 2
     if array[center] < target
         # Look at right of array
-        idx = bsearch(array[center+1..-1], target)
+        idx = bsearch(array[(center + 1)..-1], target)
         idx.is_a?(Integer) ? center + idx + 1 : nil
     elsif array[center] > target
         # Look at left side.
-        idx = bsearch(array[0..center-1], target)
-        idx.is_a?(Integer) ? idx : nil
+        bsearch(array[0..(center - 1)], target)
     elsif array[center] == target
         center
     end
 end
 
+# p bsearch([1, 2, 3], 1) # => 0
+# p bsearch([2, 3, 4, 5], 3) # => 1
+# p bsearch([2, 4, 6, 8, 10], 6) # => 2
+# p bsearch([1, 3, 4, 5, 9], 5) # => 3
+# p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
+# p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
+# p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
 
-p bsearch([1, 2, 3], 1) # => 0
-p bsearch([2, 3, 4, 5], 3) # => 1
-p bsearch([2, 4, 6, 8, 10], 6) # => 2
-p bsearch([1, 3, 4, 5, 9], 5) # => 3
-p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
-p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
-p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
+def merge_sort(array)
+    # debugger
+    return array if array.length <= 1
+    
+    center = array.length / 2
+    left = array[0...center]
+    right = array[center..-1]
+
+    left = merge_sort(left)
+    right = merge_sort(right)
+
+    return merge(left, right)
+end
+
+def merge(left, right)
+    merged = []
+
+    while left.length > 0 and right.length > 0
+        if left[0] >= right[0]
+            merged << right.shift
+        else
+            merged << left.shift
+        end
+    end
+
+    merged + left + right
+end
+
+# p merge_sort([2, 8, 5, 3, 9, 4, 1, 7])
+# p merge_sort([-5, 19, 7, 0, -2, -4])
