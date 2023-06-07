@@ -192,10 +192,12 @@ end
 def subsets(array)
     return [[]] if array.length == 0
     subs = subsets(array[0...-1])
-    subs.concat(subs.map { |x| x += [array[-1]]})
+    subs.concat(subs.map { |ele| ele += [array[-1]]})
 end
 
-p subsets([]) # => [[]]
-p subsets([1]) # => [[], [1]]
-p subsets([1, 2]) # => [[], [1], [2], [1, 2]]
-p subsets([1, 2, 3]) # => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+# p subsets([]) # => [[]]
+# p subsets([1]) # => [[], [1]]
+# p subsets([1, 2]) # => [[], [1], [2], [1, 2]]
+# p subsets([1, 2, 3]) # => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+
+
