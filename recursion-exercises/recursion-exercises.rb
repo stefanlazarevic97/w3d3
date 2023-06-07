@@ -94,7 +94,7 @@ class Array
         end
 
         copy
-    end       
+    end
 end
 
 # a = [[1,2],[3],[4,[5,6]]]
@@ -135,3 +135,27 @@ end
 # p rec_fib(2)
 # p rec_fib(238)
 
+def bsearch(array, target)
+    return nil if array.length == 1 and array[0] != target
+    center = array.length / 2
+    if array[center] < target
+        # Look at right of array
+        idx = bsearch(array[center+1..-1], target)
+        idx.is_a?(Integer) ? center + idx + 1 : nil
+    elsif array[center] > target
+        # Look at left side.
+        idx = bsearch(array[0..center-1], target)
+        idx.is_a?(Integer) ? idx : nil
+    elsif array[center] == target
+        center
+    end
+end
+
+
+p bsearch([1, 2, 3], 1) # => 0
+p bsearch([2, 3, 4, 5], 3) # => 1
+p bsearch([2, 4, 6, 8, 10], 6) # => 2
+p bsearch([1, 3, 4, 5, 9], 5) # => 3
+p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
+p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
+p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
