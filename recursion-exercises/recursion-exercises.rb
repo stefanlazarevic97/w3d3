@@ -161,7 +161,7 @@ end
 def merge_sort(array)
     # debugger
     return array if array.length <= 1
-    
+
     center = array.length / 2
     left = array[0...center]
     right = array[center..-1]
@@ -188,3 +188,14 @@ end
 
 # p merge_sort([2, 8, 5, 3, 9, 4, 1, 7])
 # p merge_sort([-5, 19, 7, 0, -2, -4])
+
+def subsets(array)
+    return [[]] if array.length == 0
+    subs = subsets(array[0...-1])
+    subs.concat(subs.map { |x| x += [array[-1]]})
+end
+
+p subsets([]) # => [[]]
+p subsets([1]) # => [[], [1]]
+p subsets([1, 2]) # => [[], [1], [2], [1, 2]]
+p subsets([1, 2, 3]) # => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
