@@ -200,4 +200,19 @@ end
 # p subsets([1, 2]) # => [[], [1], [2], [1, 2]]
 # p subsets([1, 2, 3]) # => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 
+def permutations(array)
+    # debugger
+    return [array] if array.length == 1
+    res = []
+    perms = permutations(array[0...-1])
+    perms.each do |perm|
+        (0..perm.length).each do |idx|
+            res << perm[0...idx] + [array.last] + perm[idx..-1]
+        end
+    end
+    res
+end
 
+p permutations([1])
+p permutations([1,2])
+p permutations([1,2,3])
