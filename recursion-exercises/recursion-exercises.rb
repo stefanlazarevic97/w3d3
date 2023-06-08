@@ -41,9 +41,7 @@ def expo1(num, power)
     return 1 if power == 0
     return num if power == 1
 
-    if power < 0
-        return 1.0 / expo1(num, power.abs)
-    end
+    return 1.0 / expo1(num, power.abs) if power < 0
 
     num * expo1(num, power - 1)
 end
@@ -85,12 +83,7 @@ class Array
         copy = []
 
         self.each do |ele|
-            debugger
-            if ele.is_a?(Array)
-                copy << ele.deep_dup
-            else
-                copy << ele
-            end
+            ele.is_a?(Array) ? copy << ele.deep_dup : copy << ele
         end
 
         copy
@@ -107,9 +100,7 @@ def iter_fib(n)
     return 1 if n <= 2
     fib_array = [1, 1]
 
-    until fib_array.length == n
-        fib_array << fib_array[-1] + fib_array[-2]
-    end
+    fib_array << fib_array[-1] + fib_array[-2] until fib_array.length == n
 
     fib_array[-1]
 end
@@ -138,12 +129,11 @@ end
 def bsearch(array, target)
     return nil if array.length == 1 and array[0] != target
     center = array.length / 2
+
     if array[center] < target
-        # Look at right of array
         idx = bsearch(array[(center + 1)..-1], target)
         idx.is_a?(Integer) ? center + idx + 1 : nil
     elsif array[center] > target
-        # Look at left side.
         bsearch(array[0..(center - 1)], target)
     elsif array[center] == target
         center
@@ -159,7 +149,6 @@ end
 # p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
 
 def merge_sort(array)
-    # debugger
     return array if array.length <= 1
 
     center = array.length / 2
@@ -176,11 +165,7 @@ def merge(left, right)
     merged = []
 
     while left.length > 0 and right.length > 0
-        if left[0] >= right[0]
-            merged << right.shift
-        else
-            merged << left.shift
-        end
+        left[0] >= right[0] ? merged << right.shift : merged << left.shift
     end
 
     merged + left + right
@@ -201,18 +186,33 @@ end
 # p subsets([1, 2, 3]) # => [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 
 def permutations(array)
-    # debugger
     return [array] if array.length == 1
     res = []
     perms = permutations(array[0...-1])
+
     perms.each do |perm|
-        (0..perm.length).each do |idx|
-            res << perm[0...idx] + [array.last] + perm[idx..-1]
-        end
+        (0..perm.length).each { |idx| res << perm[0...idx] + [array.last] + perm[idx..-1] }
     end
+
     res
 end
 
-p permutations([1])
-p permutations([1,2])
-p permutations([1,2,3])
+# p permutations([1])
+# p permutations([1,2])
+# p permutations([1,2,3])
+
+def greedy_make_change(total, coins_array)
+    return [] if total == 0 or coins_array.length == 0
+
+    sorted_coins = coins_array.sort.reverse
+    res = []
+
+    (total / sorted_coins[0]).times { res << sorted_coins[0] }
+
+    res += make_change(total % sorted_coins[0], sorted_coins[1..-1])
+    res
+end
+
+# p make_change(24, [7, 10, 1])
+# p make_change(56, [5, 10, 1, 25])
+
